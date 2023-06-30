@@ -49,10 +49,11 @@ export default class SessionsRouter extends BaseRouter {
       }).sendSuccess("Github login success")
     })
 
-    this.post('/logout', ['PUBLIC'], passportCall('logout', { strategyType: "locals", session:false }), async (req, res) => {
+    this.post('/logout',['PUBLIC'], async (req, res) => {
+      // Borra la cookie en la respuesta
       res.clearCookie('authToken');
+      // Envía una respuesta JSON que indica el logout exitoso
       res.sendSuccess("Logged Out");
-      res.redirect('/login');
     });
   };
 }
