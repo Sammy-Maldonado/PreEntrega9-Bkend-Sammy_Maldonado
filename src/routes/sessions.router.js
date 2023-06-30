@@ -15,11 +15,11 @@ export default class SessionsRouter extends BaseRouter {
       res.sendSuccessWithPayload(currentUser)
     })
 
-    this.post('/register', ['PUBLIC'], passportCall('register', { strategyType: "locals", session:false }), (req, res) => {
+    this.post('/register', ['NO_AUTH'], passportCall('register', { strategyType: "locals", session:false }), (req, res) => {
       res.sendSuccess()
     })
 
-    this.post('/login', ['PUBLIC'], passportCall('login', { strategyType: "locals", session:false }), (req, res) => {
+    this.post('/login', ['NO_AUTH'], passportCall('login', { strategyType: "locals", session:false }), (req, res) => {
       const token = generateToken(req.user);
 
       //Aqui envío el token generado para el usuario, al frontend, por una cookie.
@@ -30,9 +30,9 @@ export default class SessionsRouter extends BaseRouter {
       }).sendSuccess("Logged In")   //Logeado con exito
     })
 
-    this.get('/github',['PUBLIC'], passportCall('github', {strategyType: 'github', session:false }), (req, res) => { });
+    this.get('/github',['NO_AUTH'], passportCall('github', {strategyType: 'github', session:false }), (req, res) => { });
     
-    this.get('/githubcallback',['PUBLIC'], passportCall('github', {strategyType: 'github', session:false }), (req, res) => {
+    this.get('/githubcallback',['NO_AUTH'], passportCall('github', {strategyType: 'github', session:false }), (req, res) => {
       const user = {
         id: req.user.id,
         name: req.user.name,

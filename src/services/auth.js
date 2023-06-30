@@ -22,9 +22,7 @@ export const passportCall = (strategy, options = {}) => {
         switch(options.strategyType) {
           case 'jwt':
             req.error = info.message ? info.message : info.toString;
-            //res.redirect('/api/sessions/loginFail');
             return next();
-
           case 'locals':
             return res.sendUnauthorized(info.message ? info.message : info.toString())
         }
