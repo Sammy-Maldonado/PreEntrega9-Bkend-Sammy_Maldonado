@@ -1,6 +1,5 @@
 import { Router } from "express";
-import { privacy } from "../middlewares/auth.js";
-//import ProductManager from "../../src/dao/fileSystem/Managers/ProductManagers.js";
+//import { privacy } from "../middlewares/auth.js";
 import ProductsManager from "../dao/mongo/Managers/ProductsManager.js";
 import CartsManager from "../dao/mongo/Managers/CartsManager.js";
 import productsModel from "../dao/mongo/models/products.js";
@@ -9,7 +8,6 @@ import { authRoles, passportCall } from "../services/auth.js";
 
 const router = Router();
 
-//const productManager = new ProductManager()
 const productsServices = new ProductsManager();
 const cartsServices = new CartsManager();
 
@@ -90,22 +88,5 @@ router.get('/carts/:cid', async (req, res) => {
     res.status(500).send({ status: "error", error: error.message });
   }
 });
-
-/* FileSystem */
-/* router.get('/', async (req, res) => {
-  const products = await productManager.getProducts();
-  res.render('home', {
-    name: 'la tienda de Sammy',
-    css: 'home',
-    products: products
-  });
-}); */
-
-/* router.get('/realtimeproducts', async (req, res) => {
-  res.render('realTimeProducts', {
-    name: 'la tienda de Sammy',
-    css: 'realTimeProducts'
-  });
-}); */
 
 export default router;

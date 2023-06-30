@@ -1,7 +1,6 @@
 import BaseRouter from "./router.js";
 import { generateToken, passportCall } from "../services/auth.js";
 
-
 export default class SessionsRouter extends BaseRouter {
   
   init() {

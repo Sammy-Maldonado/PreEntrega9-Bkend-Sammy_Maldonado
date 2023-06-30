@@ -3,7 +3,6 @@ import handlebars from 'express-handlebars';
 import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
 import { Server } from 'socket.io';
-import passport from 'passport';
 
 import viewsRouter from './routes/views.router.js'
 import productsRouter from './routes/products.router.js';
@@ -14,10 +13,6 @@ import registerChatHandler from './listeners/chatHandler.js';
 import initializePassportStrategies from './config/passport.config.js';
 import __dirname from './utils.js';
 
-
-/* FS */
-//import ProductManager from '../src/dao/fileSystem/Managers/ProductManagers.js';
-//const productManager = new ProductManager();
 
 const app = express();
 const PORT = process.env.PORT || 8080;
