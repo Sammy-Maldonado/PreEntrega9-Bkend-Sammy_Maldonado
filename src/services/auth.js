@@ -19,10 +19,12 @@ export const passportCall = (strategy, options = {}) => {
         return res.sendServerError();
       }
       if (!user) {
-        switch (options.strategyType) {
+        switch(options.strategyType) {
           case 'jwt':
             req.error = info.message ? info.message : info.toString;
+            //res.redirect('/api/sessions/loginFail');
             return next();
+
           case 'locals':
             return res.sendUnauthorized(info.message ? info.message : info.toString())
         }
@@ -31,10 +33,10 @@ export const passportCall = (strategy, options = {}) => {
         switch (options.strategyType) {
           case 'jwt':
             if (options.redirect) return res.redirect(options.redirect);
-            req.user = user;
-            return next();
         }
       }
+      req.user = user;  //Aqui creo mi propio "req.user" con passport
+      next();
     })(req, res, next);
   }
 }

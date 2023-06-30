@@ -1,9 +1,7 @@
 import passport from 'passport';
 import local from 'passport-local';
 import GithubStrategy from 'passport-github2';
-import userModel from '../dao/mongo/models/user.js';
 import { Strategy, ExtractJwt } from 'passport-jwt';
-
 import { usersService } from '../dao/mongo/Managers/index.js';
 import { createHash, validatePassword } from '../services/auth.js';
 import { cookieExtractor } from '../utils.js';

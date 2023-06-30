@@ -1,4 +1,3 @@
-import passport from "passport";
 import BaseRouter from "./router.js";
 import { generateToken, passportCall } from "../services/auth.js";
 
@@ -17,7 +16,7 @@ export default class SessionsRouter extends BaseRouter {
       res.sendSuccessWithPayload(currentUser)
     })
 
-    this.post('/register', ['NO_AUTH'], passportCall('register', { strategyType: "locals", session:false }), (req, res) => {
+    this.post('/register', ['PUBLIC'], passportCall('register', { strategyType: "locals", session:false }), (req, res) => {
       res.sendSuccess()
     })
 
@@ -50,7 +49,7 @@ export default class SessionsRouter extends BaseRouter {
       }).sendSuccess("Github login success")
     })
 
-    this.post('/logout', async (req, res) => {
+    this.post('/logout', ['PUBLIC'], passportCall('logout', { strategyType: "locals", session:false }), async (req, res) => {
       res.clearCookie('authToken');
       res.sendSuccess("Logged Out");
       res.redirect('/login');
