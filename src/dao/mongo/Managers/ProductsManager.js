@@ -8,6 +8,10 @@ export default class ProductsManager {
   getProductById = (productId) => {
     return productsModel.findById(productId);
   };
+
+  getOneProduct = (params) => {
+    return productsModel.findOne(params)
+  }
   
   addProduct = (product) => {
     return productsModel.create(product);
@@ -19,5 +23,9 @@ export default class ProductsManager {
   
   deleteProduct = (productId) => {
     return productsModel.deleteOne({ _id: productId });
-  };
+  }
+
+  addPaginate = (query, options) => {
+    return productsModel.paginate(query, options);
+  }
 }

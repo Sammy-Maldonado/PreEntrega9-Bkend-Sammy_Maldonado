@@ -7,16 +7,16 @@ export default class SessionsRouter extends BaseRouter {
 
     this.get('/', ['PUBLIC'], passportCall('jwt', {strategyType: 'jwt', session:false }), (req,res) => {
       const currentUser = req.user;
-      res.sendSuccessWithPayload(currentUser)
+      res.sendSuccessWithPayload(currentUser);
     })
 
     this.get('/current', ['PUBLIC'], passportCall('jwt', {strategyType: 'jwt', session:false }), (req,res) => {
       const currentUser = req.user;
-      res.sendSuccessWithPayload(currentUser)
+      res.sendSuccessWithPayload(currentUser);
     })
 
     this.post('/register', ['NO_AUTH'], passportCall('register', { strategyType: "locals", session:false }), (req, res) => {
-      res.sendSuccess()
+      res.sendSuccess();
     })
 
     this.post('/login', ['NO_AUTH'], passportCall('login', { strategyType: "locals", session:false }), (req, res) => {

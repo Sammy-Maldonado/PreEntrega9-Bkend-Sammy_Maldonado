@@ -1,5 +1,4 @@
 import { Router } from "express";
-//import { privacy } from "../middlewares/auth.js";
 import ProductsManager from "../dao/mongo/Managers/ProductsManager.js";
 import CartsManager from "../dao/mongo/Managers/CartsManager.js";
 import productsModel from "../dao/mongo/models/products.js";
