@@ -1,12 +1,8 @@
-import CartsManager from "../dao/mongo/Managers/CartsManager.js";
-import ProductsManager from "../dao/mongo/Managers/ProductsManager.js"
-
-const cartManager = new CartsManager();
-const productManager = new ProductsManager()
+import { cartsService, productsService } from '../dao/mongo/Managers/index.js';
 
 const getCarts = async (req, res) => {
   try {
-    const carts = await cartManager.getCarts();
+    const carts = await cartsService.getCarts();
     res.status(200).send({ status: "success", payload: carts });
   } catch (error) {
     res.status(500).send({ status: "error", error: 'Error interno del servidor' })
@@ -27,7 +23,7 @@ const addCart = async (req, res) => {
       throw new Error("El 'name' debe ser de tipo 'String' y el 'price' de tipo 'Number'")
     }
 
-    const newCart = await cartManager.addCart({ name, price });
+    const newCart = await cartsService.addCart({ name, price });
     res.status(200).send({ status: "success", cart: newCart });
   } catch (error) {
     res.status(500).send({ status: "error", error: error.message });
@@ -37,7 +33,7 @@ const addCart = async (req, res) => {
 const getCartById = async (req, res) => {
   try {
     const cartId = req.params.cid;
-    const cart = await cartManager.getCartById(cartId).populate('products.product');
+    const cart = await cartsService.getCartById(cartId).populate('products.product');
     if (cart) {
       res.send({ status: "success", message: `El cartito '${req.params.cid}' se ha cargado con exito`, payload: cart });
     } else {
@@ -56,7 +52,7 @@ const updateCart = async (req, res) => {
 
     // Verificando si los productos existen en la base de datos
     const productIds = updatedProducts.map(product => product.product);
-    const existingProducts = await productManager.getProducts({ _id: { $in: productIds } });
+    const existingProducts = await productsService.getProducts({ _id: { $in: productIds } });
 
     // Validando si se encontraron todos los productos
     if (existingProducts.length !== productIds.length) {
@@ -64,7 +60,7 @@ const updateCart = async (req, res) => {
       return;
     }
 
-    const updatedCart = await cartManager.updateCart(cartId, updatedProducts);
+    const updatedCart = await cartsService.updateCart(cartId, updatedProducts);
 
     res.status(200).send({ status: "success", message: `Carrito actualizado correctamente`, payload: updatedCart });
   } catch (error) {
@@ -78,7 +74,7 @@ const deleteAllProducts = async (req, res) => {
     const cartId = req.params.cid;
     const deleteProducts = [];
 
-    const deleteAllProducts = await cartManager.deleteAllProducts(cartId, deleteProducts);
+    const deleteAllProducts = await cartsService.deleteAllProducts(cartId, deleteProducts);
 
     res.status(200).send({ status: "success", message: `Productos del carrito eliminados con éxito`, payload: deleteAllProducts });
   } catch (error) {
@@ -98,7 +94,7 @@ const addProductToCart = async (req, res) => {
       throw new Error('El Id del producto debe ser mayor que 0.');
     }
 
-    const updatedCart = await cartManager.addProductToCart(cid, pid, quantity);
+    const updatedCart = await cartsService.addProductToCart(cid, pid, quantity);
     if (updatedCart) {
       res.status(200).send({ status: "success", message: `Producto agregado correctamente al carrito '${req.params.cid}'`, payload: updatedCart })
     } else {
@@ -122,7 +118,7 @@ const updateProductQuantity = async (req, res) => {
       throw new Error('El Id del producto debe ser mayor que 0.');
     }
 
-    const updatedProductQuantity = await cartManager.updateProductQuantity(cid, pid, quantity);
+    const updatedProductQuantity = await cartsService.updateProductQuantity(cid, pid, quantity);
     if (updatedProductQuantity) {
       res.status(200).send({ status: "success", message: `Cantidad actualizada correctamente`, payload: updatedProductQuantity })
     } else {
@@ -139,10 +135,10 @@ const deleteProductFromCart = async (req, res) => {
   const {cid, pid} = req.params;
 
   try {
-    const cart = await cartManager.deleteProductFromCart(cid, pid);
+    const cart = await cartsService.deleteProductFromCart(cid, pid);
 
     // Consulta para obtener el título del producto eliminado
-    const deleteProduct = await productManager.getProductById(pid);
+    const deleteProduct = await productsService.getProductById(pid);
 
     res.status(200).send({ status: "success", message: `El producto '${deleteProduct.title}' ha sido eliminado con exito`, payload: deleteProduct});
 

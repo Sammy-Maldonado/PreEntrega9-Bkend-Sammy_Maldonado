@@ -1,11 +1,9 @@
-import ProductsManager from '../dao/mongo/Managers/ProductsManager.js';
-
-const productManager = new ProductsManager();
+import { productsService } from '../dao/mongo/Managers/index.js';
 
 const getProducts = async (req, res) => {
   try {
     const { page = 1, category } = req.query;
-    const { docs, hasPrevPage, hasNextPage, prevPage, nextPage, ...rest } = await productManager.addPaginate(
+    const { docs, hasPrevPage, hasNextPage, prevPage, nextPage, ...rest } = await productsService.addPaginate(
       { /* category: "frutas" */ },
       {
         page, limit: 5,
@@ -41,7 +39,7 @@ const getProducts = async (req, res) => {
 const addProduct = async (req, res) => {
   try {
     const { title, description, price, code, stock, category, thumbnails } = req.body;
-    const productWithCode = await productManager.getOneProduct({ code })
+    const productWithCode = await productsService.getOneProduct({ code })
 
     //Comprobando que no falten datos o que no esten vacíos
 
@@ -62,7 +60,7 @@ const addProduct = async (req, res) => {
       thumbnails
     };
 
-    const result = await productManager.addProduct(product);
+    const result = await productsService.addProduct(product);
     res.send({ status: "success", message: "Producto agregado correctamente", payload: result });
   } catch (error) {
     console.log(error);
@@ -73,7 +71,7 @@ const addProduct = async (req, res) => {
 const getProductById = async (req, res) => {
   try {
     const productId = req.params.pId;
-    const product = await productManager.getProductById(productId);
+    const product = await productsService.getProductById(productId);
     if (product) {
       res.send({ status: "success", message: `El producto '${product.title}', se ha cargado correctamente`, payload: product });
     } else {
@@ -89,7 +87,7 @@ const updateProduct = async (req, res) => {
   try {
     const productId = req.params.pId;
     const productToUpdate = req.body;
-    const result = await productManager.updateProduct(productId, productToUpdate)
+    const result = await productsService.updateProduct(productId, productToUpdate)
     console.log(result);
     res.send({ status: "success", message: "Producto actualizado con éxito" })
   } catch (error) {
@@ -101,7 +99,7 @@ const updateProduct = async (req, res) => {
 const deleteProduct = async (req, res) => {
   try {
     const productId = req.params.pId;
-    const result = await productManager.deleteProduct(productId);
+    const result = await productsService.deleteProduct(productId);
     console.log(result);
     res.send({ status: "success", message: "Su producto ha sido eliminado con éxito" })
   } catch (error) {
