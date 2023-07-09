@@ -1,4 +1,4 @@
-import { productsService } from '../dao/mongo/Managers/index.js';
+import { productsService } from "../services/index.js";
 
 const getProducts = async (req, res) => {
   try {
@@ -60,7 +60,7 @@ const addProduct = async (req, res) => {
       thumbnails
     };
 
-    const result = await productsService.addProduct(product);
+    const result = await productsService.createProduct(product);
     res.send({ status: "success", message: "Producto agregado correctamente", payload: result });
   } catch (error) {
     console.log(error);
@@ -87,6 +87,13 @@ const updateProduct = async (req, res) => {
   try {
     const productId = req.params.pId;
     const productToUpdate = req.body;
+
+    //Verificando que el producto exista en la base de datos
+    const productExists = await productsService.getProductById(productId);
+    if(!productExists) {
+      return res.status(404).send({ status: "error", message: "Producto no encontrado, por favor, ingrese una ID válida" });
+    }
+
     const result = await productsService.updateProduct(productId, productToUpdate)
     console.log(result);
     res.send({ status: "success", message: "Producto actualizado con éxito" })

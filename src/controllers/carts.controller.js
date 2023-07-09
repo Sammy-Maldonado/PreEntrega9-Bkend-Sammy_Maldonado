@@ -1,8 +1,9 @@
-import { cartsService, productsService } from '../dao/mongo/Managers/index.js';
+import { cartsService } from "../services/index.js";
 
 const getCarts = async (req, res) => {
   try {
-    const carts = await cartsService.getCarts();
+    const carts = await cartsService.getAllCarts();
+    console.log(carts);
     res.status(200).send({ status: "success", payload: carts });
   } catch (error) {
     res.status(500).send({ status: "error", error: 'Error interno del servidor' })
@@ -23,7 +24,7 @@ const addCart = async (req, res) => {
       throw new Error("El 'name' debe ser de tipo 'String' y el 'price' de tipo 'Number'")
     }
 
-    const newCart = await cartsService.addCart({ name, price });
+    const newCart = await cartsService.createCart({ name, price });
     res.status(200).send({ status: "success", cart: newCart });
   } catch (error) {
     res.status(500).send({ status: "error", error: error.message });

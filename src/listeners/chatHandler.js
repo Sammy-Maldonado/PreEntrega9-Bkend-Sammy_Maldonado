@@ -1,12 +1,10 @@
-import MessagesManager from "../dao/mongo/Managers/MessagesManager.js";
-
-const messagesService = new MessagesManager();
+import { messagesService } from "../services/index.js";
 
 const registerChatHandler = (io, socket) => {
 
   const saveMessage = async(message) => {
     await messagesService.createMessage(message);
-    const messageLogs = await messagesService.getMessages();
+    const messageLogs = await messagesService.getAllMessages();
     io.emit('chat:messageLogs', messageLogs);
   }
 

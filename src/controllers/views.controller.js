@@ -1,12 +1,12 @@
-import { productsService, cartsService } from '../dao/mongo/Managers/index.js';
+import { productsService, cartsService } from '../services/index.js';
 
 const getProducts = async (req, res) => {
-  const products = await productsService.getProducts().lean();
+  const products = await productsService.getAllProducts().lean();
   res.render('products', {products, user: req.user});
 }
 
 const getCarts = async (req, res) => {
-  const carts = await cartsService.getCarts().lean();
+  const carts = await cartsService.getAllCarts().lean();
   res.render('carts', { carts });
 }
 
