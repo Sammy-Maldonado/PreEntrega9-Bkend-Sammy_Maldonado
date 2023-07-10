@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 import { Server } from 'socket.io';
 import cors from 'cors';
 import config from './config.js';
+import MongoSingleton from '../MongoSingleton.js';
 
 import viewsRouter from './routes/views.router.js'
 import productsRouter from './routes/products.router.js';
@@ -24,7 +25,7 @@ app.use(cors({
 const PORT = config.app.PORT || 8080;
 const server = app.listen(PORT, () => console.log(`Listening on ${PORT}`));
 const io = new Server(server);
-const connection = mongoose.connect(config.mongo.URL)
+const connection = MongoSingleton.getInstance();
 app.use(express.json());
 app.use(express.static(`${__dirname}/public`));
 app.use(express.urlencoded({ extended: true }));
