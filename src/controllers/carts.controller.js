@@ -3,7 +3,6 @@ import { cartsService } from "../services/index.js";
 const getCarts = async (req, res) => {
   try {
     const carts = await cartsService.getAllCarts();
-    console.log(carts);
     res.status(200).send({ status: "success", payload: carts });
   } catch (error) {
     res.status(500).send({ status: "error", error: 'Error interno del servidor' })

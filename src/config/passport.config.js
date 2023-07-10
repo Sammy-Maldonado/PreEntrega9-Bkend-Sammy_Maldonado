@@ -5,6 +5,7 @@ import { usersService } from '../services/index.js';
 import { Strategy, ExtractJwt } from 'passport-jwt';
 import { createHash, validatePassword } from '../services/auth.js';
 import { cookieExtractor } from '../utils.js';
+import config from '../config.js';
 
 const LocalStrategy = local.Strategy;
 const JWTStrategy = Strategy;
@@ -35,12 +36,12 @@ const initializePassportStrategies = () => {
   passport.use('login', new LocalStrategy({ usernameField: 'email' }, async (email, password, done) => {
     let resultUser;
     try {
-      if (email === "adminCoder@coder.com" && password === "adminCod3r123") {
+      if (email === config.admin.EMAIL && password === config.admin.PWD) {
         //Acá entro como SUPER ADMIN
         const resultUser = {
           id: 0,
           name: "Admin",
-          email: "adminCoder@coder.com",
+          email: config.admin.EMAIL,
           role: "superadmin",
         }
         return done(null, resultUser)

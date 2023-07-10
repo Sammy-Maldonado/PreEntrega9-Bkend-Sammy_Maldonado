@@ -3,6 +3,8 @@ import handlebars from 'express-handlebars';
 import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
 import { Server } from 'socket.io';
+import cors from 'cors';
+import config from './config.js';
 
 import viewsRouter from './routes/views.router.js'
 import productsRouter from './routes/products.router.js';
@@ -15,10 +17,14 @@ import __dirname from './utils.js';
 
 
 const app = express();
-const PORT = process.env.PORT || 8080;
+//Defino que front puede entrar a mi servidor mediante CORS
+app.use(cors({
+  origin: 'http://127.0.0.1:5500'
+}));
+const PORT = config.app.PORT || 8080;
 const server = app.listen(PORT, () => console.log(`Listening on ${PORT}`));
 const io = new Server(server);
-const connection = mongoose.connect('mongodb+srv://CoderUser:123@cluster0.gfqujcv.mongodb.net/ecommerce?retryWrites=true&w=majority')
+const connection = mongoose.connect(config.mongo.URL)
 app.use(express.json());
 app.use(express.static(`${__dirname}/public`));
 app.use(express.urlencoded({ extended: true }));
